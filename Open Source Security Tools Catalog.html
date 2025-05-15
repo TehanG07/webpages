@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Open Source Security Tools Catalog - a curated list of security tools for OSINT, WiFi Hacking, Bug Bounty, Forensics, Malware Analysis, SOC, Red Team, Blue Team, Purple Team." />
+  <meta name="author" content="Your Name or Company" />
+  <title>Open Source Security Tools Catalog</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Tilt.js library for 3D card effect -->
+  <script src="https://unpkg.com/vanillatilt@1.7.0/dist/vanilla-tilt.min.js" defer></script>
+  <!-- Animate On Scroll Library -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+
+  <style>
+    /* Reset & base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at top left, #0d1117, #161b22);
+      color: #c9d1d9;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Animated Background Effect */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: radial-gradient(circle at center, #0f5cd433, transparent 70%);
+      pointer-events: none;
+      animation: pulse 10s ease-in-out infinite alternate;
+      backdrop-filter: blur(5px);
+    }
+
+    @keyframes pulse {
+      from {
+        transform: scale(1);
+        opacity: 0.3;
+      }
+      to {
+        transform: scale(1.05);
+        opacity: 0.5;
+      }
+    }
+
+    h1,
+    h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      color: #2ea043; /* new color */
+      text-shadow: none; /* removed glow */
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #238636;
+      text-shadow: 0 0 8px #238636;
+      border-bottom: 3px solid #238636;
+      padding-bottom: 10px;
+    }
+
+    section {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 30px;
+      background: rgba(22, 27, 34, 0.85);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px #23863688;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .tool-card {
+      background: rgba(22, 27, 34, 0.7);
+      border-radius: 16px;
+      padding: 25px 20px;
+      text-align: center;
+      transition: all 0.4s ease;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(35, 134, 54, 0.3);
+      border: 1px solid rgba(35, 134, 54, 0.3);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(88, 166, 255, 0.1), transparent);
+      transform: rotate(25deg);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .tool-card:hover::before {
+      animation: shine 6s linear infinite;
+      opacity: 1;
+    }
+
+    @keyframes shine {
+      0% {
+        transform: translateX(-100%) rotate(25deg);
+      }
+      100% {
+        transform: translateX(100%) rotate(25deg);
+      }
+    }
+
+    .tool-icon {
+      font-size: 48px;
+      color: #58a6ff;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 2px #58a6ff);
+      z-index: 1;
+      position: relative;
+    }
+
+    .tool-card:hover .tool-icon {
+      color: #2ea043;
+      filter: drop-shadow(0 0 10px #2ea043);
+    }
+
+    .tool-name {
+      font-weight: 700;
+      font-size: 20px;
+      color: #58a6ff;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 12px;
+      transition: color 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tool-name:hover {
+      color: #2ea043;
+      text-decoration: underline;
+    }
+
+    .tool-desc {
+      font-size: 14px;
+      color: #8b949e;
+      line-height: 1.5;
+      min-height: 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Navigation Menu */
+    .nav-container {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: rgba(13, 17, 23, 0.8);
+      border-bottom: 1px solid #30363d;
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 15px 20px;
+    }
+
+    .nav-menu {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .nav-item {
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      color: #c9d1d9;
+      background: rgba(88, 166, 255, 0.1);
+      border: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .nav-item:hover,
+    .nav-item:focus {
+      background: rgba(35, 134, 54, 0.3);
+      color: #58a6ff;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(35, 134, 54, 0.2);
+      outline: none;
+    }
+
+    /* Scroll to top button */
+    #scrollToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(30, 30, 30, 0.8);
+      color: #58a6ff;
+      padding: 12px 16px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+      transition: all 0.3s ease;
+      z-index: 999;
+      display: none;
+      border: 1px solid #30363d;
+    }
+
+    #scrollToTop:hover {
+      background: #161b22;
+      color: #2ea043;
+      transform: scale(1.1);
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(13, 17, 23, 0.9);
+      color: #8b949e;
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 80px;
+      position: relative;
+      border-top: 1px solid #30363d;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #58a6ff;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #58a6ff;
+    }
+
+    .footer-logo span {
+      color: #2ea043;
+    }
+
+    .footer-slogan {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 25px;
+      color: #8b949e;
+      font-style: italic;
+      letter-spacing: 0.04em;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+      }
+
+      section {
+        margin: 30px 10px;
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background animation -->
+  <div class="bg-animation" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <div class="nav-container" role="navigation" aria-label="Primary navigation">
+    <nav>
+      <ul class="nav-menu">
+        <li><a class="nav-item" href="#osint"><i class="fas fa-search"></i> OSINT</a></li>
+        <li><a class="nav-item" href="#wifihacking"><i class="fas fa-wifi"></i> WiFi </a></li>
+        <li><a class="nav-item" href="#bugbounty" title="Go to Bug Bounty Tools section"><i class="fas fa-bug"></i> Bug Bounty</a></li>
+        <li><a class="nav-item" href="#forensics"><i class="fas fa-user-secret"></i> Forensics</a></li>
+        <li><a class="nav-item" href="#malware-analysis"><i class="fas fa-virus"></i> Malware </a></li>
+        <li><a class="nav-item" href="#soc"><i class="fas fa-shield-alt"></i> SOC</a></li>
+        <li><a class="nav-item" href="#redteam"><i class="fas fa-user-ninja"></i> Red Team</a></li>
+        <li><a class="nav-item" href="#blueteam"><i class="fas fa-user-shield"></i> Blue Team</a></li>
+        <li><a class="nav-item" href="#purpleteam"><i class="fas fa-users"></i> Purple Team</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <header>
+    <h1>Open Source Security Tools Catalog</h1>
+    <p style="text-align:center; color:#8b949e; margin-bottom: 40px;"> </p>
+  </header>
+
+<!-- OSINT Tools -->
+<section id="osint">
+  <h2>OSINT Tools</h2>
+  <div class="tool-grid">
+
+    <div class="tool-card">
+      <a href="https://github.com/MaltegoTech/maltego-trx" target="_blank" rel="noopener noreferrer" title="Maltego">
+        <i class="fas fa-search tool-icon"></i>
+        <div class="tool-name">Maltego</div>
+      </a>
+      <div class="tool-desc">Graphical link analysis and data mining tool for OSINT investigations.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/laramies/theHarvester" target="_blank" rel="noopener noreferrer" title="TheHarvester">
+        <i class="fas fa-globe tool-icon"></i>
+        <div class="tool-name">TheHarvester</div>
+      </a>
+      <div class="tool-desc">Tool to gather emails, subdomains, hosts, employee names from public sources.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/smicallef/spiderfoot" target="_blank" rel="noopener noreferrer" title="SpiderFoot">
+        <i class="fas fa-map-marker-alt tool-icon"></i>
+        <div class="tool-name">SpiderFoot</div>
+      </a>
+      <div class="tool-desc">Automated OSINT tool for reconnaissance & intelligence gathering.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/dxa4481/truffleHog" target="_blank" rel="noopener noreferrer" title="TruffleHog">
+        <i class="fas fa-piggy-bank tool-icon"></i>
+        <div class="tool-name">TruffleHog</div>
+      </a>
+      <div class="tool-desc">Searches git repositories for secrets, keys, and sensitive data.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/lanmaster53/recon-ng" target="_blank" rel="noopener noreferrer" title="Recon-ng">
+        <i class="fas fa-project-diagram tool-icon"></i>
+        <div class="tool-name">Recon-ng</div>
+      </a>
+      <div class="tool-desc">Modular framework for reconnaissance and OSINT gathering.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/mxrch/Osintgram" target="_blank" rel="noopener noreferrer" title="Osintgram">
+        <i class="fas fa-user-secret tool-icon"></i>
+        <div class="tool-name">Osintgram</div>
+      </a>
+      <div class="tool-desc">Instagram OSINT tool for data gathering and analysis.</div>
+    </div>
+
+  </div>
+</section>
+  
+<!-- WiFi Hacking Tools -->
+<section id="wifihacking">
+  <h2>WiFi Hacking Tools</h2>
+  <div class="tool-grid">
+
+    <div class="tool-card">
+      <a href="https://www.aircrack-ng.org/" target="_blank" rel="noopener noreferrer" title="Aircrack-ng">
+        <i class="fas fa-wifi tool-icon"></i>
+        <div class="tool-name">Aircrack-ng</div>
+      </a>
+      <div class="tool-desc">Complete suite of tools to assess WiFi network security.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/derv82/wifite2" target="_blank" rel="noopener noreferrer" title="Wifite2">
+        <i class="fas fa-bullseye tool-icon"></i>
+        <div class="tool-name">Wifite2</div>
+      </a>
+      <div class="tool-desc">Automated wireless attack tool for cracking WPA/WPA2 passwords.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/derv82/wifite" target="_blank" rel="noopener noreferrer" title="Wifite">
+        <i class="fas fa-robot tool-icon"></i>
+        <div class="tool-name">Wifite</div>
+      </a>
+      <div class="tool-desc">Automated tool to attack multiple wireless networks in a row.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Bug Bounty Tools -->
+<section id="bugbounty">
+  <h2>Bug Bounty Tools</h2>
+  <div class="tool-grid">
+    <div class="tool-card">
+      <a href="https://portswigger.net/burp/communitydownload" target="_blank" rel="noopener noreferrer" title="Burp Suite Community">
+        <i class="fas fa-bug tool-icon"></i>
+        <div class="tool-name">Burp Suite Community</div>
+      </a>
+      <div class="tool-desc">Popular web vulnerability scanner and proxy tool.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/projectdiscovery/subfinder" target="_blank" rel="noopener noreferrer" title="Subfinder">
+        <i class="fas fa-code tool-icon"></i>
+        <div class="tool-name">Subfinder</div>
+      </a>
+      <div class="tool-desc">Fast passive subdomain enumeration tool for bug bounty reconnaissance.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://xsser.03c8.net/" target="_blank" rel="noopener noreferrer" title="XSSer">
+        <i class="fas fa-file-code tool-icon"></i>
+        <div class="tool-name">XSSer</div>
+      </a>
+      <div class="tool-desc">Automated tool for finding Cross-site scripting vulnerabilities.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/tomnomnom/waybackurls" target="_blank" rel="noopener noreferrer" title="Waybackurls">
+        <i class="fas fa-history tool-icon"></i>
+        <div class="tool-name">Waybackurls</div>
+      </a>
+      <div class="tool-desc">Fetches URLs from the Wayback Machine for reconnaissance.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://nmap.org/download.html" target="_blank" rel="noopener noreferrer" title="Nmap">
+        <i class="fas fa-network-wired tool-icon"></i>
+        <div class="tool-name">Nmap</div>
+      </a>
+      <div class="tool-desc">Powerful network scanner and security auditing tool.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/projectdiscovery/katana" target="_blank" rel="noopener noreferrer" title="Katana">
+        <i class="fas fa-robot tool-icon"></i>
+        <div class="tool-name">Katana</div>
+      </a>
+      <div class="tool-desc">Fast web crawler for reconnaissance and bug bounty.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/hakluke/hakrawler" target="_blank" rel="noopener noreferrer" title="hakrawler">
+        <i class="fas fa-binoculars tool-icon"></i>
+        <div class="tool-name">hakrawler</div>
+      </a>
+      <div class="tool-desc">Fast URL discovery tool for bug bounty hunters.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/tomnomnom/gf" target="_blank" rel="noopener noreferrer" title="gf">
+        <i class="fas fa-filter tool-icon"></i>
+        <div class="tool-name">gf</div>
+      </a>
+      <div class="tool-desc">Pattern matching tool to filter interesting data during recon.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.zaproxy.org/download/" target="_blank" rel="noopener noreferrer" title="OWASP ZAP">
+        <i class="fas fa-bug tool-icon"></i>
+        <div class="tool-name">OWASP ZAP</div>
+      </a>
+      <div class="tool-desc">Open source web application security scanner.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.wireshark.org/download.html" target="_blank" rel="noopener noreferrer" title="Wireshark">
+        <i class="fas fa-wifi tool-icon"></i>
+        <div class="tool-name">Wireshark</div>
+      </a>
+      <div class="tool-desc">Network protocol analyzer for deep inspection of traffic.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Forensic Tools -->
+<section id="forensics">
+  <h2>Forensic Tools</h2>
+  <div class="tool-grid">
+
+    <div class="tool-card">
+      <a href="https://www.sleuthkit.org/autopsy/" target="_blank" rel="noopener noreferrer" title="Autopsy">
+        <i class="fas fa-microscope tool-icon"></i>
+        <div class="tool-name">Autopsy</div>
+      </a>
+      <div class="tool-desc">Digital forensics platform and graphical interface for The Sleuth Kit.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/sleuthkit/sleuthkit" target="_blank" rel="noopener noreferrer" title="The Sleuth Kit">
+        <i class="fas fa-tools tool-icon"></i>
+        <div class="tool-name">The Sleuth Kit</div>
+      </a>
+      <div class="tool-desc">Collection of command line tools to investigate disk images.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/volatilityfoundation/volatility3" target="_blank" rel="noopener noreferrer" title="Volatility 3">
+        <i class="fas fa-microchip tool-icon"></i>
+        <div class="tool-name">Volatility 3</div>
+      </a>
+      <div class="tool-desc">Next-generation memory forensics framework with Python 3 support.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/arxsys/dff" target="_blank" rel="noopener noreferrer" title="DFF (Digital Forensics Framework)">
+        <i class="fas fa-search tool-icon"></i>
+        <div class="tool-name">DFF</div>
+      </a>
+      <div class="tool-desc">Modular digital forensics framework for data acquisition and analysis.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Malware Analysis Tools -->
+<section id="malware-analysis">
+  <h2>Malware Analysis Tools</h2>
+  <div class="tool-grid">
+
+    <div class="tool-card">
+      <a href="https://www.hybrid-analysis.com/" target="_blank" rel="noopener noreferrer" title="Hybrid Analysis">
+        <i class="fas fa-dna tool-icon"></i>
+        <div class="tool-name">Hybrid Analysis</div>
+      </a>
+      <div class="tool-desc">Free malware analysis service that detects and analyzes suspicious files.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.joesandbox.com/" target="_blank" rel="noopener noreferrer" title="Joe Sandbox">
+        <i class="fas fa-vials tool-icon"></i>
+        <div class="tool-name">Joe Sandbox</div>
+      </a>
+      <div class="tool-desc">Powerful dynamic malware analysis platform with comprehensive reports.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.metasploit.com/" target="_blank" rel="noopener noreferrer" title="Metasploit Framework">
+        <i class="fas fa-bug tool-icon"></i>
+        <div class="tool-name">Metasploit Framework</div>
+      </a>
+      <div class="tool-desc">Widely-used penetration testing framework that supports malware analysis.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/mandiant/flare-floss" target="_blank" rel="noopener noreferrer" title="Floss">
+        <i class="fas fa-file-code tool-icon"></i>
+        <div class="tool-name">Floss</div>
+      </a>
+      <div class="tool-desc">Tool to automatically extract obfuscated strings from malware samples.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.radare.org/n/" target="_blank" rel="noopener noreferrer" title="Radare2">
+        <i class="fas fa-code-branch tool-icon"></i>
+        <div class="tool-name">Radare2</div>
+      </a>
+      <div class="tool-desc">Open source reverse engineering framework for analyzing binaries.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.virustotal.com/" target="_blank" rel="noopener noreferrer" title="VirusTotal">
+        <i class="fas fa-shield-virus tool-icon"></i>
+        <div class="tool-name">VirusTotal</div>
+      </a>
+      <div class="tool-desc">Free service that analyzes files and URLs for viruses and malware.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SOC Tools -->
+<section id="soc">
+  <h2>SOC Tools</h2>
+  <div class="tool-grid">
+
+    <div class="tool-card">
+      <a href="https://www.elastic.co/elk-stack" target="_blank" rel="noopener noreferrer" title="ELK Stack">
+        <i class="fas fa-chart-line tool-icon"></i>
+        <div class="tool-name">ELK Stack</div>
+      </a>
+      <div class="tool-desc">Open-source stack for log collection, analysis, and visualization (Elasticsearch, Logstash, Kibana).</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.graylog.org/" target="_blank" rel="noopener noreferrer" title="Graylog">
+        <i class="fas fa-stream tool-icon"></i>
+        <div class="tool-name">Graylog</div>
+      </a>
+      <div class="tool-desc">Open-source centralized log management and analysis tool.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/Neo23x0/sigma" target="_blank" rel="noopener noreferrer" title="Sigma">
+        <i class="fas fa-file-alt tool-icon"></i>
+        <div class="tool-name">Sigma</div>
+      </a>
+      <div class="tool-desc">Generic and open signature format for SIEM systems to detect suspicious activity.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/Security-Onion-Solutions/security-onion" target="_blank" rel="noopener noreferrer" title="Security Onion">
+        <i class="fas fa-network-wired tool-icon"></i>
+        <div class="tool-name">Security Onion</div>
+      </a>
+      <div class="tool-desc">Linux distro for intrusion detection, network security monitoring, and log management.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Red Teaming Tools -->
+<section id="redteam">
+  <h2>Red Teaming Tools</h2>
+  <div class="tool-grid">
+
+    <div class="tool-card">
+      <a href="https://www.metasploit.com/" target="_blank" rel="noopener noreferrer" title="Metasploit">
+        <i class="fas fa-crosshairs tool-icon"></i>
+        <div class="tool-name">Metasploit</div>
+      </a>
+      <div class="tool-desc">Penetration testing framework with exploits and payloads.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.cobaltstrike.com/" target="_blank" rel="noopener noreferrer" title="Cobalt Strike">
+        <i class="fas fa-user-ninja tool-icon"></i>
+        <div class="tool-name">Cobalt Strike</div>
+      </a>
+      <div class="tool-desc">Adversary simulation tool for Red Team operations (commercial).</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/EmpireProject/Empire" target="_blank" rel="noopener noreferrer" title="Empire">
+        <i class="fas fa-terminal tool-icon"></i>
+        <div class="tool-name">Empire</div>
+      </a>
+      <div class="tool-desc">PowerShell and Python post-exploitation agent (open source).</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/BloodHoundAD/BloodHound" target="_blank" rel="noopener noreferrer" title="BloodHound">
+        <i class="fas fa-network-wired tool-icon"></i>
+        <div class="tool-name">BloodHound</div>
+      </a>
+      <div class="tool-desc">Active Directory attack path analysis and visualization tool.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/trustedsec/social-engineer-toolkit" target="_blank" rel="noopener noreferrer" title="Social-Engineer Toolkit">
+        <i class="fas fa-user-secret tool-icon"></i>
+        <div class="tool-name">Social-Engineer Toolkit (SET)</div>
+      </a>
+      <div class="tool-desc">Framework for social engineering penetration testing.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/PowerShellMafia/PowerSploit" target="_blank" rel="noopener noreferrer" title="PowerSploit">
+        <i class="fas fa-bolt tool-icon"></i>
+        <div class="tool-name">PowerSploit</div>
+      </a>
+      <div class="tool-desc">PowerShell post-exploitation and offensive security scripts.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/danielmiessler/SecLists" target="_blank" rel="noopener noreferrer" title="SecLists">
+        <i class="fas fa-list tool-icon"></i>
+        <div class="tool-name">SecLists</div>
+      </a>
+      <div class="tool-desc">Collection of multiple types of lists used during security assessments.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/Veil-Framework/Veil" target="_blank" rel="noopener noreferrer" title="Veil-Framework">
+        <i class="fas fa-shield-alt tool-icon"></i>
+        <div class="tool-name">Veil-Framework</div>
+      </a>
+      <div class="tool-desc">Tool to generate metasploit payloads that bypass antivirus detection.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Blue Teaming Tools -->
+<section id="blueteam">
+  <h2>Blue Teaming Tools</h2>
+  <div class="tool-grid">
+
+    <div class="tool-card">
+      <a href="https://www.ossec.net/" target="_blank" rel="noopener noreferrer" title="OSSEC">
+        <i class="fas fa-shield-virus tool-icon"></i>
+        <div class="tool-name">OSSEC</div>
+      </a>
+      <div class="tool-desc">Open-source Host-based Intrusion Detection System (HIDS).</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.snort.org/" target="_blank" rel="noopener noreferrer" title="Snort">
+        <i class="fas fa-network-wired tool-icon"></i>
+        <div class="tool-name">Snort</div>
+      </a>
+      <div class="tool-desc">Network intrusion detection and prevention system.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.suricata.io/" target="_blank" rel="noopener noreferrer" title="Suricata">
+        <i class="fas fa-bug tool-icon"></i>
+        <div class="tool-name">Suricata</div>
+      </a>
+      <div class="tool-desc">High-performance Network IDS, IPS, and Network Security Monitoring engine.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://www.wazuh.com/" target="_blank" rel="noopener noreferrer" title="Wazuh">
+        <i class="fas fa-shield-alt tool-icon"></i>
+        <div class="tool-name">Wazuh</div>
+      </a>
+      <div class="tool-desc">Open source security monitoring with SIEM, intrusion detection, and compliance.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Purple Teaming Tools -->
+<section id="purpleteam">
+  <h2>Purple Teaming Tools</h2>
+  <div class="tool-grid">
+
+    <div class="tool-card">
+      <a href="https://atomicredteam.io/" target="_blank" rel="noopener noreferrer" title="Atomic Red Team">
+        <i class="fas fa-sync-alt tool-icon"></i>
+        <div class="tool-name">Atomic Red Team</div>
+      </a>
+      <div class="tool-desc">Library of tests mapped to MITRE ATT&CK for purple team exercises.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://caldera.mitre.org/" target="_blank" rel="noopener noreferrer" title="Caldera">
+        <i class="fas fa-users tool-icon"></i>
+        <div class="tool-name">Caldera</div>
+      </a>
+      <div class="tool-desc">Automated adversary emulation system for purple teaming.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/redcanaryco/atomic-red-team" target="_blank" rel="noopener noreferrer" title="Atomic Red Team (GitHub)">
+        <i class="fas fa-robot tool-icon"></i>
+        <div class="tool-name">Atomic Red Team (GitHub)</div>
+      </a>
+      <div class="tool-desc">Community-maintained repo for red-blue collaboration with MITRE ATT&CK tests.</div>
+    </div>
+
+    <div class="tool-card">
+      <a href="https://github.com/ApolloAuto/apollo" target="_blank" rel="noopener noreferrer" title="Apollo">
+        <i class="fas fa-dice tool-icon"></i>
+        <div class="tool-name">Apollo</div>
+      </a>
+      <div class="tool-desc">Purple team adversary simulation and detection testing framework.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer role="contentinfo" aria-label="Page footer">
+  <div class="footer-content">
+    <div class="footer-logo">
+      <h2>Cyber Security Protector (CSP)</h2>
+    </div>
+    <div class="footer-slogan">
+      Your trusted ally in cybersecurity.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
